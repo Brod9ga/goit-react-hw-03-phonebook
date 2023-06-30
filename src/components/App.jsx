@@ -7,7 +7,12 @@ import PropTypes from 'prop-types';
 
 export class App extends React.Component {
   state = {
-    contacts: [],
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
     filter: '',
   };
 
@@ -47,6 +52,19 @@ export class App extends React.Component {
     this.setState({ filter: event.target.value });
   };
 
+  componentDidMount() {
+    const storedState = localStorage.getItem('phonebookState');
+
+    if (storedState) {
+      this.setState(JSON.parse(storedState));
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
+      localStorage.setItem('phonebookState', JSON.stringify(this.state));
+    }
+  }
   render() {
     const { contacts, filter } = this.state;
 
@@ -78,9 +96,8 @@ App.propTypes = {
       number: PropTypes.string.isRequired,
     })
   ),
-  filter: PropTypes.string.isRequired,
-  handleDelete: PropTypes.func.isRequired,
-  handleAddContact: PropTypes.func.isRequired,
-  handleFilterChange: PropTypes.func.isRequired,
-  
+  // filter: PropTypes.string.isRequired,
+  // handleDelete: PropTypes.func.isRequired,
+  // handleAddContact: PropTypes.func.isRequired,
+  // handleFilterChange: PropTypes.func.isRequired,
 };
